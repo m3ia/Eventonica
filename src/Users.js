@@ -2,26 +2,24 @@ import React from 'react';
 // import logo from './logo.svg'; // save for future icon design
 import './App.css';
 
+const Title = props => (
+  <h1 className="title">{props.text}</h1>
+);
+
+const AllUsers = props => (
+<p>All Users should go here!</p>
+);
+
+
 function Users() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+      <>
+        <Title text="All Users" />
+        <div className="all-users">
+          <AllUsers />
+        </div>
+      </>
   );
 }
-
 
 export default Users;
