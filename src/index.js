@@ -2,9 +2,9 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
+import Events from './Events';
+import Users from './Users';
 import reportWebVitals from './reportWebVitals';
-import Events from './Components/Events';
-import Users from './Components/Users';
  
 ReactDOM.render(
   <React.StrictMode>

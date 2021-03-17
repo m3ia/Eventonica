@@ -1,7 +1,9 @@
+import React from 'react';
+
 // import logo from './logo.svg'; // save for future icon design
 import './App.css';
 
-function Users() {
+function Events() {
   return (
     <div className="App">
       <header className="App-header">
@@ -23,4 +25,4 @@ function Users() {
 }
 
 
-export default Users;
+export default Events;
