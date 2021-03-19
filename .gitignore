@@ -9,6 +9,10 @@ yarn.lock
 package-lock.json
 package.json
 eventonica-part-6
+.eslintrc.json
+.prettierrc.js
+.vscode/
+src/reportWebVitals.js
 
 # testing
 /coverage
