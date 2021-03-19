@@ -1,170 +1,228 @@
 import React from 'react';
-import logo from './logo.svg'; // save for future icon design
 import './App.css';
-import TextField from '@material-ui/core/TextField'; 
-import Autocomplete from '@material-ui/lab/Autocomplete'; 
-import Checkbox from '@material-ui/core/Checkbox'; 
-import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank'; 
-import CheckBoxIcon from '@material-ui/icons/CheckBox'; 
 
-{ /* For Checkboxes */ }
-const icon = <CheckBoxOutlineBlankIcon fontSize="small" />; 
-const checkedIcon = <CheckBoxIcon fontSize="small" />; 
-  
-const Title = props => (
-  <h1 className="title">{props.text}</h1>
-);
+const Title = ({ text }) => {
+  return <h1 className="title">{text}</h1>;
+};
 
-const AllEvents = props => (
-<p>All Events should go here!</p>
-);
 
-const Categories = () => { 
-  
-  // Our sample dropdown options 
-  const options = ['Live Entertainment', 'Amusement/Fairs/Festivals', 'Charitable Cause',  
-  'Performing Arts (Theatre)', 'Educational', 'Conference'] 
-  
-  return ( 
-    <div style={{ paddingBottom: "20px", marginLeft: '40%', marginTop: '60px' }}> 
-      <p>Categories</p> 
-      <Autocomplete 
-        multiple 
-        id="checkboxes-tags-demo"
-        options={options} 
-        renderOption={(option, { selected }) => ( 
-          <React.Fragment> 
-            <Checkbox 
-              icon={icon} 
-              checkedIcon={checkedIcon} 
-              style={{ marginRight: 8 }} 
-              checked={selected} 
-            /> 
-            {option} 
-          </React.Fragment> 
-        )} 
-        style={{ width: 500 }} 
-        renderInput={(params) => ( 
-          <TextField {...params} variant="outlined"
-            label="Categories"
-            placeholder="Check all that apply" /> 
-        )} 
-      /> 
-    </div> 
-  ); 
-} 
-
-const EventForm = () => {
-  const [name, setName] = React.useState("");
-  const [description, setDescription] = React.useState("");
-  const [eventStartDate, setEventStartDate] = React.useState("{/* today?? */}");
-  const [eventEndDate, setEventEndDate] = React.useState("{/* today?? */}");
-  const [categories, setCategories] = React.useState("");
-  const [address, setAddress] = React.useState("");
-
-  const handleSubmit = () => {
-    console.log({ name, description, eventStartDate, eventEndDate, categories, address });
-  };
+const AllEvents = ({events}) => { 
 
   return (
+    <>
+    <p> All Events should go here! </p>
     <div>
+      {events.map((event) => (
+        <div key={event.name}>{event.name}</div>
+      ))}
+      </div>
+      </>
+  );
+};
+
+const initialState = {
+  name: "",  
+  description: "",
+  eventStartDate: "",
+  eventEndDate: "",
+  category: "",
+  address: "",
+};
+
+const EventForm = ({ submitEvent }) => {
+  const [state, dispatch] = React.useReducer(reducer, initialState);
+
+
+  function reducer(state, action) {
+    switch (action.type) {
+      case "setName":
+        return {...state, name: action.value };
+      case "setDescription":
+        return {...state, description: action.value };
+      case "setEventStartDate":
+        return {...state, eventStartDate: action.value };
+      case "setEventEndDate":
+        return {...state, eventEndDate: action.value };
+      case "setCategory":
+        return {...state, category: action.value };
+      case "setAddress":
+        return {...state, address: action.value };
+      case "saveEvent":
+        submitEvent(state);
+        // reset form
+        return initialState;      
+      default:
+        return state;
+    }
+  }
+  console.log("re-rendering, current state is", state);
+  // function addedEvent(state) {
+  //   //params name, description, eventStartDate, eventEndDate, category, address
+  //   // ViewAllEvents.push({
+  //   //   name: name,  
+  //   //   description: description,
+  //   //   eventStartDate: eventStartDate,
+  //   //   eventEndDate: eventEndDate,
+  //   //   category: category,
+  //   //   address: address
+  //   // });
+  //   ViewAllEvents.push(state);
+  //   console.log(state);
+  //   console.log({state});
+  //   console.log(ViewAllEvents);
+  //   return ViewAllEvents;
+  // }
+  // const [name, setName] = React.useState('');
+  // const [description, setDescription] = React.useState('');
+  // const [
+  //   eventStartDate,
+  //   setEventStartDate,
+  // ] = React.useState('');
+  // const [eventEndDate, setEventEndDate] = React.useState(
+  //   ''
+  // );
+  // const [category, setcategory] = React.useState('');
+  // const [address, setAddress] = React.useState('');
+
+  return (
+
       <form
         onSubmit={(e) => {
           e.preventDefault();
-          handleSubmit();
+          console.log("form handleSubmit");
+          // handleSubmit();
         }}
       >
-        <div style={{ paddingBottom: "20px" }}>
-          <label>
-            Event Name:
+        <div
+          style={{
+            paddingBottom: '20px',
+          }}
+        >
+          <label>Event Name:
             <input
               name="eventName"
-              value={name}
+              value={state.name}
               onChange={(e) => {
-                setName(e.target.value);
+                dispatch({ type: "setName", value: e.target.value });
               }}
             />
           </label>
         </div>
-
-        <div style={{ paddingBottom: "20px" }}>
-          <label>
-            Event Description:
+        <div
+          style={{
+            paddingBottom: '20px',
+          }}
+        >
+          <label>Event Description:
             <textarea
               name="description"
-              value={description}
+              value={state.description}
               onChange={(e) => {
-                setDescription(e.target.value);
+                dispatch({ type: "setDescription", value: e.target.value });
               }}
             />
           </label>
         </div>
-
-        <div style={{ paddingBottom: "20px" }}>
-          <label>
-            Event Start Date:
+        <div
+          style={{
+            paddingBottom: '20px',
+          }}
+        >
+          <label>Event Start Date:
             <input
               type="date"
-              value={eventStartDate}
+              value={state.eventStartDate}
               onChange={(e) => {
-                setEventStartDate(e.target.value);
+                dispatch({ type: "setEventStartDate", value: e.target.value });
+
               }}
             />
           </label>
         </div>
-
-        <div style={{ paddingBottom: "20px" }}>
-          <label>
-            Event End Date:
+        <div
+          style={{
+            paddingBottom: '20px',
+          }}
+        >
+          <label>Event End Date:
             <input
               type="date"
-              value={eventEndDate}
+              value={state.eventEndDate}
               onChange={(e) => {
-                setEventEndDate(e.target.value);
+                dispatch({ type: "setEventEndDate", value: e.target.value });
+
               }}
             />
           </label>
         </div>
-
-        <div style={{ paddingBottom: "20px" }}>
+        <div
+          style={{
+            paddingBottom: '20px',
+          }}
+        >
           <label>
             Address:
             <textarea
               name="eventAddress"
-              value={address}
+              value={state.address}
               onChange={(e) => {
-                setAddress(e.target.value);
+                dispatch({ type: "setAddress", value: e.target.value });
+
               }}
             />
           </label>
         </div>
-
-        <Categories />
-
-
+        <div
+          style={{
+            paddingBottom: '20px'          
+          }}
+        >
+        <label>Category:
+          <select id="category" name="category" 
+            value={state.category} 
+            onChange={ (e) => { dispatch({ type: "setCategory", value: e.target.value }); } } >
+            <option value="Live Entertainment">Live Entertainment</option>
+            <option value="Charitable Event">Charitable Event</option>
+            <option value="Educational">Educational</option>
+            <option value="Festival">Festival</option>
+            <option value="Community">Community</option>
+          </select>
+          </label>
+        </div>
         <div>
-          <input type="submit" value="Submit" />
+        <button onClick={() => dispatch({ type: 'saveEvent'})}>Save</button>
+
         </div>
       </form>
-    </div>
-
-  );
-};
+    );
+  };
 
 function Events() {
+  // add a useState for the list of events
+  // pass the "setEvents" down to "EventForm"
+  // in EventForm, on submit, use setEvents
+  // to update the list of events
+  // to AllEvents (below), pass the list of events
+  const [events, setEvents] = React.useState([]);
+  const submitEvent = (event) => {
+    setEvents([...events, event]);
+  }
   return (
     <>
-    <Title text="Add An Event" />
-    <div className="add-events">
-      <EventForm />
-    </div>
-
-        <Title text="All Events" />
-        <div className="all-events">
-          <AllEvents />
-        </div>
-      </>
+      <h1>
+        <Title text='Add An Event' />
+      </h1>
+      <div className="add-events">
+        <EventForm submitEvent={submitEvent}/>
+      </div>
+      <h2>
+        <Title text='All Events' />
+      </h2>
+      <div className="all-events">
+        <AllEvents events={events} />
+      </div>
+    </>
   );
-};
+}
 
 export default Events;
