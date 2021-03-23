@@ -1,16 +1,16 @@
-import logo from './logo.svg';
+import logo from './calendar.png';
 import './App.css';
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 
 // App.propTypes = {
 //   children: React.PropTypes.node,
 // };
 
 function App() {
-  const [apiResponse, setAPIResponse] = React.useState('');
+  const [apiResponse, setAPIResponse] = useState('');
 
   function callAPI() {
-    fetch('http://localhost:9000/testAPI')
+    fetch('http://localhost:9000/events')
       .then((res) => res.text())
       .then((res) => setAPIResponse(res))
       .catch((err) => err);
@@ -26,7 +26,6 @@ function App() {
         <img src={logo} className="App-logo" alt="logo" />
         <h1 className="App-title">
           {' '}
-          Welcome to React{' '}
         </h1>{' '}
       </header>{' '}
       <p className="App-intro"> {apiResponse} </p>
