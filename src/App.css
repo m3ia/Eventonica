@@ -1,8 +1,21 @@
-.App, body {
+Title {
   text-align: center;
+} 
+
+div, body {
+  /* width: 200px; */
+  /* border: 1px solid  #2d2d2d; */
+  max-width: 500px;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: left;
+  
 }
 
-.App-logo {
+/* react starter code */
+/* .App-logo {
   height: 40vmin;
   pointer-events: none;
 }
@@ -35,4 +48,4 @@
   to {
     transform: rotate(360deg);
   }
-}
+} */
