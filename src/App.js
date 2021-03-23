@@ -2,10 +2,6 @@ import logo from './calendar.png';
 import './App.css';
 import React, { useState, useEffect } from 'react';
 
-// App.propTypes = {
-//   children: React.PropTypes.node,
-// };
-
 function App() {
   const [apiResponse, setAPIResponse] = useState('');
 
