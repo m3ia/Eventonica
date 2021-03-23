@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './App.css';
 
 const Title = ({ text }) => {
@@ -7,14 +7,19 @@ const Title = ({ text }) => {
 
 
 const AllEvents = ({events}) => { 
+  console.log('hiii', events);
+  if (events.length === 0) { return null; }
+  const EventItem = (event) => (
+    <div key={event.name}>
+      Name: {event.name}
+    </div>
 
+  )
   return (
     <>
     <p> All Events should go here! </p>
     <div>
-      {events.map((event) => (
-        <div key={event.name}>{event.name}</div>
-      ))}
+      {events.map((event) => (EventItem(event)))}
       </div>
       </>
   );
@@ -56,41 +61,12 @@ const EventForm = ({ submitEvent }) => {
     }
   }
   console.log("re-rendering, current state is", state);
-  // function addedEvent(state) {
-  //   //params name, description, eventStartDate, eventEndDate, category, address
-  //   // ViewAllEvents.push({
-  //   //   name: name,  
-  //   //   description: description,
-  //   //   eventStartDate: eventStartDate,
-  //   //   eventEndDate: eventEndDate,
-  //   //   category: category,
-  //   //   address: address
-  //   // });
-  //   ViewAllEvents.push(state);
-  //   console.log(state);
-  //   console.log({state});
-  //   console.log(ViewAllEvents);
-  //   return ViewAllEvents;
-  // }
-  // const [name, setName] = React.useState('');
-  // const [description, setDescription] = React.useState('');
-  // const [
-  //   eventStartDate,
-  //   setEventStartDate,
-  // ] = React.useState('');
-  // const [eventEndDate, setEventEndDate] = React.useState(
-  //   ''
-  // );
-  // const [category, setcategory] = React.useState('');
-  // const [address, setAddress] = React.useState('');
 
   return (
 
       <form
         onSubmit={(e) => {
           e.preventDefault();
-          console.log("form handleSubmit");
-          // handleSubmit();
         }}
       >
         <div
@@ -203,10 +179,25 @@ function Events() {
   // in EventForm, on submit, use setEvents
   // to update the list of events
   // to AllEvents (below), pass the list of events
-  const [events, setEvents] = React.useState([]);
+  const [events, setEvents] = useState([]);
   const submitEvent = (event) => {
+    
     setEvents([...events, event]);
   }
+  
+  const [apiResponse, setAPIResponse] = useState('');
+
+  function callAPI() {
+    fetch('http://localhost:9000/events')
+      .then((res) => res.text())
+      .then((res) => setAPIResponse(JSON.parse(res)))
+      .catch((err) => err);
+  }
+
+  useEffect(() => {
+    callAPI();
+  }, []);
+  console.log(apiResponse);
   return (
     <>
       <h1>
@@ -219,7 +210,7 @@ function Events() {
         <Title text='All Events' />
       </h2>
       <div className="all-events">
-        <AllEvents events={events} />
+        <AllEvents events={apiResponse} />
       </div>
     </>
   );
