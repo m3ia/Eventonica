@@ -12,7 +12,7 @@ eventonica-part-6
 .eslintrc.json
 .prettierrc.js
 .vscode/
-*reportWebVitals.js
+*reportWebVitals.js*
 
 # testing
 /coverage
